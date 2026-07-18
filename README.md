@@ -14,7 +14,7 @@ The objective of this project is to gain hands-on experience with modern data en
 
 # Architecture
 
-./_images/dec_pipeline_architecture.png
+![Project Architecture](_images/dec_pipeline_architecture.png)
 
 ```
                 +---------------------+
