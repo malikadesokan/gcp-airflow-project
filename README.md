@@ -4,18 +4,17 @@
 
 This project demonstrates a simple end-to-end data engineering pipeline built using Apache Airflow (via Astro CLI), Docker, and Google Cloud Platform.
 
-The pipeline automatically:
+The pipeline uploads datasets saved locally to a Google Storage (GSC) bucket and then loads the uploaded data into a BigQUery table for analysis. The pipleline makes use of **Apache Airflow** for orchestration and **GSCOperator** for data movement and **Terraform** for provisioning the infrastructure. 
 
-1. Generates a sample workforce dataset using Python.
-2. Saves the dataset locally as a timestamped CSV file.
-3. Uploads all CSV files from the local data directory to a Google Cloud Storage (GCS) bucket.
-4. Loads the uploaded data into a BigQuery table for analysis.
+The objective of this project is to gain hands-on experience with modern data engineering tools including Apache Airflow, Astro CLI, Docker, Google Cloud Storage, BigQuery, and Infrastructure as Code concepts. By automating the workflow, this platform ensures that data is consistently uploaded, securely stored, and made immediately available in BigQuery for downstream analytics.
 
-The objective of this project is to gain hands-on experience with modern data engineering tools including Apache Airflow, Astro CLI, Docker, Google Cloud Storage, BigQuery, and Infrastructure as Code concepts.
+
 
 ---
 
 # Architecture
+
+./_images/dec_pipeline_architecture.png
 
 ```
                 +---------------------+
