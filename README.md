@@ -5,6 +5,7 @@
 This project demonstrates a simple end-to-end data engineering pipeline built using Apache Airflow (via Astro CLI), Docker, and Google Cloud Platform.
 
 The pipeline uploads workforce datasets saved locally to a Google Cloud Storage (GCS) bucket and then loads the uploaded data into a BigQuery table for downstream analysis. The pipleline makes use of **Apache Airflow** for orchestration and **GSCOperator** for data movement and **Terraform** for provisioning the infrastructure. 
+
 ---
 
 # Architecture
@@ -34,6 +35,7 @@ Many organisations rely on manual processes to move data from local systems into
 This project demonstrates how a modern data engineering pipeline can automate the process of ingesting data into Google Cloud Platform (GCP). Using Terraform for infrastructure provisioning, Apache Airflow for orchestration, Google Cloud Storage (GCS) for intermediate storage, and BigQuery as the analytical data warehouse, the pipeline provides a repeatable, reliable, and scalable solution for loading structured data into the cloud.
 
 The project showcases Infrastructure as Code (IaC), workflow orchestration, and cloud-native data engineering practices that are commonly used in production environments.
+
 ---
 # Project Objectives
 
