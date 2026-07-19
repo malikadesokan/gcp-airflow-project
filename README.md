@@ -117,31 +117,13 @@ astro dev start
 
 ### Step 3 – Upload File to GCS
 
-The Airflow DAG uses:
-
-```
-LocalFilesystemToGCSOperator
-```
-
-to upload the CSV file located inside
-
-```
-dags/data/
-```
-
-into the configured Google Cloud Storage bucket.
+The Airflow DAG uses **LocalFilesystemToGCSOperator** to upload the CSV file saved locally into the configured Google Cloud Storage bucket.
 
 ---
 
 ### Step 4 – Load Data into BigQuery
 
-The uploaded file is loaded into BigQuery using
-
-```
-GCSToBigQueryOperator
-```
-
-The destination table is automatically populated and becomes immediately available for querying.
+The uploaded file is loaded into BigQuery using **GCSToBigQueryOperator**. The destination table is automatically populated and becomes immediately available for querying.
 
 ---
 
@@ -259,14 +241,6 @@ Airflow will be available at
 http://localhost:8080
 ```
 
-Default credentials
-
-```
-Username: admin
-
-Password: admin
-```
-
 ---
 
 # Configure Airflow Connection
@@ -280,7 +254,7 @@ Connections
     ↓
 Add Connection
 ```
-
+---
 Create a new connection
 
 | Field | Value |
@@ -288,10 +262,14 @@ Create a new connection
 | Connection ID | google_cloud_default |
 | Connection Type | Google Cloud |
 
+![Airflow Connection](./_images/airflow_admin_connection.png)
+
 Under **Extra** add your:
 
 - Project ID
 - Service Account Email
+
+
 
 Save the connection.
 
@@ -316,6 +294,8 @@ Trigger DAG
 ```
 
 Monitor each task until all tasks complete successfully.
+
+![DAGS Runs](./_images/airflow_dags_runs.png)
 
 ---
 
