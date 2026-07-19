@@ -1,49 +1,15 @@
-# Workforce Data Pipeline with Apache Airflow, Astro CLI, Google Cloud Storage & BigQuery
+# Workforce Data Pipeline (Local File ===> GCS ===> Bigquery)
 
 ## Overview
 
 This project demonstrates a simple end-to-end data engineering pipeline built using Apache Airflow (via Astro CLI), Docker, and Google Cloud Platform.
 
-The pipeline uploads datasets saved locally to a Google Storage (GSC) bucket and then loads the uploaded data into a BigQUery table for analysis. The pipleline makes use of **Apache Airflow** for orchestration and **GSCOperator** for data movement and **Terraform** for provisioning the infrastructure. 
-
-The objective of this project is to gain hands-on experience with modern data engineering tools including Apache Airflow, Astro CLI, Docker, Google Cloud Storage, BigQuery, and Infrastructure as Code concepts. By automating the workflow, this platform ensures that data is consistently uploaded, securely stored, and made immediately available in BigQuery for downstream analytics.
-
-
-
+The pipeline uploads workforce datasets saved locally to a Google Cloud Storage (GCS) bucket and then loads the uploaded data into a BigQuery table for downstream analysis. The pipleline makes use of **Apache Airflow** for orchestration and **GSCOperator** for data movement and **Terraform** for provisioning the infrastructure. 
 ---
 
 # Architecture
 
 ![Project Architecture](_images/dec_pipeline_architecture.png)
-
-```
-                +---------------------+
-                | Python Data Script  |
-                | Generates CSV Files |
-                +----------+----------+
-                           |
-                           |
-                           v
-              Local Airflow Data Folder
-           (/usr/local/airflow/dags/data)
-                           |
-                           |
-                           v
-      LocalFilesystemToGCSOperator
-                           |
-                           |
-                           v
-          Google Cloud Storage (GCS)
-                           |
-                           |
-                           v
-          GCSToBigQueryOperator
-                           |
-                           |
-                           v
-                 BigQuery Table
-```
-
 ---
 
 # Technologies Used
@@ -61,25 +27,28 @@ The objective of this project is to gain hands-on experience with modern data en
 | Git & GitHub | Version control |
 
 ---
+# Problem Statement
 
-# Project Structure
+Many organisations rely on manual processes to move data from local systems into cloud-based analytics platforms. These manual workflows are often time-consuming, error-prone, difficult to monitor, and challenging to scale as data volumes increase. Delays or inconsistencies in data ingestion can lead to inaccurate reporting and slower decision-making.
 
-```
-.
-├── dags/
-│   ├── workforce_pipeline.py
-│   └── data/
-│       ├── workforce_20260716_150210.csv
-│       ├── workforce_20260716_160815.csv
-│       └── ...
-│
-├── include/
-├── plugins/
-├── config.py
-├── Dockerfile
-├── requirements.txt
-├── terraform/
-└── README.md
+This project demonstrates how a modern data engineering pipeline can automate the process of ingesting data into Google Cloud Platform (GCP). Using Terraform for infrastructure provisioning, Apache Airflow for orchestration, Google Cloud Storage (GCS) for intermediate storage, and BigQuery as the analytical data warehouse, the pipeline provides a repeatable, reliable, and scalable solution for loading structured data into the cloud.
+
+The project showcases Infrastructure as Code (IaC), workflow orchestration, and cloud-native data engineering practices that are commonly used in production environments.
+---
+# Project Objectives
+
+The pipeline is designed to:
+
+**.** Provision cloud infrastructure using Terraform.
+**.** Upload a local CSV dataset to Google Cloud Storage.
+**.** Orchestrate the workflow using Apache Airflow.
+**.** Load data from GCS into a BigQuery table.
+**.** Ensure the pipeline is repeatable and easy to maintain.
+**.** Demonstrate best practices for Infrastructure as Code and workflow automation.
+
+
+---
+
 ```
 
 ---
