@@ -12,7 +12,7 @@ The primary objective of this project is to showcase Infrastructure as Code (IaC
 
 ## Project Architecture
 
-![Pipeline Architecture](./_image/dec_pipeline_architecture.png)
+![Pipeline Architecture](./_images/dec_pipeline_architecture.png)
 
 ### Architecture Flow
 
