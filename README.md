@@ -40,10 +40,15 @@ The project showcases Infrastructure as Code (IaC), workflow orchestration, and 
 The pipeline is designed to:
 
 **.** Provision cloud infrastructure using Terraform.
+
 **.** Upload a local CSV dataset to Google Cloud Storage.
+
 **.** Orchestrate the workflow using Apache Airflow.
+
 **.** Load data from GCS into a BigQuery table.
+
 **.** Ensure the pipeline is repeatable and easy to maintain.
+
 **.** Demonstrate best practices for Infrastructure as Code and workflow automation.
 
 
