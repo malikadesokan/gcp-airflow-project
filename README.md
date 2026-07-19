@@ -53,9 +53,28 @@ The pipeline is designed to:
 
 **.** Demonstrate best practices for Infrastructure as Code and workflow automation.
 
-
 ---
+# Project Workflow
 
+The pipeline performs the following tasks:
+
+**1.** Terraform creates the required Google Cloud resources:
+
+       Google Cloud Storage Bucket
+
+       BigQuery Dataset
+
+       BigQuery Table
+
+       Required IAM permissions
+       
+**2.** Apache Airflow starts the ETL workflow.
+
+**3.** The LocalFilesystemToGCSOperator uploads the CSV file from the local machine to the GCS bucket.
+
+**4.** The GCSToBigQueryOperator imports the CSV file into a BigQuery table.
+
+**5.** BigQuery stores the structured data, making it available for querying and analytics.
 ```
 
 ---
