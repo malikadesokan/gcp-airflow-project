@@ -1,268 +1,355 @@
-# Workforce Data Pipeline (Local File ===> GCS ===> Bigquery)
+# Google Cloud Data Ingestion Pipeline with Airflow, Terraform & BigQuery
 
-## Overview
+## Project Overview
 
-This project demonstrates a simple end-to-end data engineering pipeline built using Apache Airflow (via Astro CLI), Docker, and Google Cloud Platform.
+This project demonstrates a complete end-to-end data engineering pipeline that automates the ingestion of structured CSV data into Google BigQuery using modern cloud-native technologies.
 
-The pipeline uploads workforce datasets saved locally to a Google Cloud Storage (GCS) bucket and then loads the uploaded data into a BigQuery table for downstream analysis. The pipleline makes use of **Apache Airflow** for orchestration and **GSCOperator** for data movement and **Terraform** for provisioning the infrastructure. 
+The solution provisions all required Google Cloud infrastructure using **Terraform**, orchestrates the data pipeline using **Apache Airflow (Astronomer)**, stores raw data in **Google Cloud Storage (GCS)**, and loads it into **BigQuery** where it can be queried for analytics and reporting.
+
+The primary objective of this project is to showcase Infrastructure as Code (IaC), workflow orchestration, and cloud-based data warehousing following industry best practices.
 
 ---
 
-# Architecture
+## Project Architecture
 
-![Project Architecture](_images/dec_pipeline_architecture.png)
+![Pipeline Architecture](./_img/pipeline_architecture.png)
+
+### Architecture Flow
+
+```
+          Local CSV File
+                 │
+                 ▼
+      Apache Airflow DAG
+                 │
+      LocalFilesystemToGCSOperator
+                 │
+                 ▼
+      Google Cloud Storage (GCS)
+                 │
+         GCSToBigQueryOperator
+                 │
+                 ▼
+         Google BigQuery
+                 │
+                 ▼
+      Reporting / Analytics
+```
+
+Terraform is responsible for provisioning all required cloud resources before the Airflow pipeline is executed.
+
 ---
 
-# Technologies Used
+# Problem Statement
+
+Many organisations still receive operational data as flat files that are manually uploaded into cloud environments. These manual processes are often:
+
+- Time consuming
+- Error-prone
+- Difficult to monitor
+- Hard to reproduce
+- Not scalable as data volumes increase
+
+Without an automated pipeline, maintaining data quality and ensuring datasets are consistently available for reporting becomes increasingly difficult.
+
+This project addresses these challenges by creating an automated ingestion workflow that transfers local CSV files into Google Cloud Storage before loading them into BigQuery, while Terraform ensures all required infrastructure is created in a repeatable and version-controlled manner.
+
+---
+
+# Project Objectives
+
+The project aims to:
+
+- Automate file ingestion into Google Cloud
+- Demonstrate Infrastructure as Code using Terraform
+- Learn workflow orchestration using Apache Airflow
+- Store raw files securely inside Google Cloud Storage
+- Load structured datasets into BigQuery
+- Create a reproducible cloud deployment
+- Separate infrastructure management from data orchestration
+- Follow modern Data Engineering best practices
+
+---
+
+# Technology Stack
 
 | Technology | Purpose |
 |------------|---------|
-| Python | Generate sample workforce data |
-| Pandas | Data manipulation |
+| Python | Airflow DAG development |
 | Apache Airflow | Workflow orchestration |
-| Astro CLI | Local Airflow development |
-| Docker | Containerised environment |
-| Google Cloud Storage | Store raw CSV files |
-| BigQuery | Data warehouse |
-| Terraform | Provision cloud resources |
-| Git & GitHub | Version control |
+| Astronomer CLI | Local Airflow environment |
+| Terraform | Infrastructure provisioning |
+| Google Cloud Platform | Cloud services |
+| Google Cloud Storage | Raw file storage |
+| Google BigQuery | Analytical data warehouse |
+| Google IAM | Authentication and permissions |
+| Docker | Containerised Airflow environment |
 
 ---
-# Problem Statement
 
-Many organisations rely on manual processes to move data from local systems into cloud-based analytics platforms. These manual workflows are often time-consuming, error-prone, difficult to monitor, and challenging to scale as data volumes increase. Delays or inconsistencies in data ingestion can lead to inaccurate reporting and slower decision-making.
-
-This project demonstrates how a modern data engineering pipeline can automate the process of ingesting data into Google Cloud Platform (GCP). Using Terraform for infrastructure provisioning, Apache Airflow for orchestration, Google Cloud Storage (GCS) for intermediate storage, and BigQuery as the analytical data warehouse, the pipeline provides a repeatable, reliable, and scalable solution for loading structured data into the cloud.
-
-The project showcases Infrastructure as Code (IaC), workflow orchestration, and cloud-native data engineering practices that are commonly used in production environments.
-
----
-# Project Objectives
-
-The pipeline is designed to:
-
-**.** Provision cloud infrastructure using Terraform.
-
-**.** Upload a local CSV dataset to Google Cloud Storage.
-
-**.** Orchestrate the workflow using Apache Airflow.
-
-**.** Load data from GCS into a BigQuery table.
-
-**.** Ensure the pipeline is repeatable and easy to maintain.
-
-**.** Demonstrate best practices for Infrastructure as Code and workflow automation.
-
----
-# Project Workflow
+# Pipeline Workflow
 
 The pipeline performs the following tasks:
 
-**1.** Terraform creates the required Google Cloud resources:
+### Step 1 – Infrastructure Deployment
 
-       Google Cloud Storage Bucket
+Terraform provisions:
 
-       BigQuery Dataset
+- Google Cloud Storage Bucket
+- BigQuery Dataset
+- BigQuery Table
+- IAM Roles
+- Service Account
 
-       BigQuery Table
-
-       Required IAM permissions
-       
-**2.** Apache Airflow starts the ETL workflow.
-
-**3.** The LocalFilesystemToGCSOperator uploads the CSV file from the local machine to the GCS bucket.
-
-**4.** The GCSToBigQueryOperator imports the CSV file into a BigQuery table.
-
-**5.** BigQuery stores the structured data, making it available for querying and analytics.
-```
+Infrastructure only needs to be deployed once unless changes are made.
 
 ---
 
-# Workflow
+### Step 2 – Airflow Starts
 
-## Step 1
-
-Generate a workforce dataset using Python.
-
-The dataset is saved with a timestamp to ensure that each execution creates a new file.
-
-Example
+The project runs inside an Astronomer-managed Airflow environment.
 
 ```
-workforce_20260716_181500.csv
-```
-
----
-
-## Step 2
-
-Airflow searches the local data directory and uploads every CSV file to Google Cloud Storage.
-
-Destination example
-
-```
-gs://ade-demo-bucket-123456/raw/
-```
-
----
-
-## Step 3
-
-Airflow loads the uploaded CSV files into BigQuery.
-
-The resulting table can then be queried using SQL or visualised in BI tools such as Power BI or Looker Studio.
-
----
-
-# DAG Overview
-
-The DAG consists of two main tasks.
-
-```
-upload_csv
-      |
-      |
-      v
-load_gcs_data_to_bq
-```
-
-### upload_csv
-
-Uses
-
-```
-LocalFilesystemToGCSOperator
-```
-
-Purpose
-
-- Reads CSV files from the local directory
-- Uploads them into GCS
-
----
-
-### load_gcs_data_to_bq
-
-Uses
-
-```
-GCSToBigQueryOperator
-```
-
-Purpose
-
-- Reads uploaded files
-- Loads data into BigQuery
-- Creates the destination table if required
-
----
-
-# Running the Project
-
-## Start Astro
-
-```bash
 astro dev start
 ```
 
 ---
 
-## List DAGs
+### Step 3 – Upload File to GCS
+
+The Airflow DAG uses:
+
+```
+LocalFilesystemToGCSOperator
+```
+
+to upload the CSV file located inside
+
+```
+dags/data/
+```
+
+into the configured Google Cloud Storage bucket.
+
+---
+
+### Step 4 – Load Data into BigQuery
+
+The uploaded file is loaded into BigQuery using
+
+```
+GCSToBigQueryOperator
+```
+
+The destination table is automatically populated and becomes immediately available for querying.
+
+---
+
+### Step 5 – Data Analysis
+
+The data stored inside BigQuery can now be queried using:
+
+- SQL
+- Looker Studio
+- Power BI
+- Tableau
+- Other BI tools
+
+---
+
+# Prerequisites
+
+Before running the project ensure you have installed:
+
+- Python 3.x
+- Docker Desktop
+- Astronomer CLI
+- Terraform
+- Google Cloud SDK
+- Git
+
+You will also need:
+
+- A Google Cloud Project
+- Billing enabled
+- BigQuery API enabled
+- Cloud Storage API enabled
+
+---
+
+# Authentication
+
+Login using Google Cloud SDK
 
 ```bash
-astro dev run dags list
+gcloud auth application-default login
+```
+
+Locate your generated credentials file.
+
+Example:
+
+```
+C:\Users\username\AppData\Roaming\gcloud\application_default_credentials.json
+```
+
+Copy this file into the project data folder if required.
+
+Create a `.env` file
+
+```bash
+cp .env.example .env
+```
+
+Update the environment variable:
+
+```
+GOOGLE_APPLICATION_CREDENTIALS=<path_to_credentials>
 ```
 
 ---
 
-## Test DAG
+# Deploy Infrastructure
+
+Navigate into Terraform
 
 ```bash
-astro dev run dags test workforce_pipeline
+cd terraform
 ```
+
+Initialise Terraform
+
+```bash
+terraform init
+```
+
+Preview resources
+
+```bash
+terraform plan
+```
+
+Deploy infrastructure
+
+```bash
+terraform apply -auto-approve
+```
+
+Terraform creates all required Google Cloud resources automatically.
 
 ---
 
-## View Logs
+# Start Airflow
+
+Return to the project root
 
 ```bash
-astro dev logs scheduler
+cd ..
 ```
 
----
+Start Astronomer
 
-## Open Airflow
+```bash
+astro dev start
+```
+
+Airflow will be available at
 
 ```
 http://localhost:8080
 ```
 
----
-
-# Configuration
-
-Project configuration is stored in
+Default credentials
 
 ```
-config.py
-```
+Username: admin
 
-Example
-
-```python
-project_id = "your-project-id"
-
-gcs_bucket_name = "your-bucket"
-
-data_source_path = "/usr/local/airflow/dags/data"
-
-dataset_id = "ade_demo_bigquery"
-
-table_name = "practice_table"
+Password: admin
 ```
 
 ---
 
-# Sample Output
+# Configure Airflow Connection
 
-Generated files
-
-```
-workforce_20260716_190020.csv
-workforce_20260716_190150.csv
-workforce_20260716_190400.csv
-```
-
-Uploaded objects
+Inside Airflow
 
 ```
-gs://ade-demo-bucket-123456/raw/workforce_20260716_190020.csv
-
-gs://ade-demo-bucket-123456/raw/workforce_20260716_190150.csv
+Admin
+    ↓
+Connections
+    ↓
+Add Connection
 ```
 
-BigQuery
+Create a new connection
+
+| Field | Value |
+|---------|---------|
+| Connection ID | google_cloud_default |
+| Connection Type | Google Cloud |
+
+Under **Extra** add your:
+
+- Project ID
+- Service Account Email
+
+Save the connection.
+
+---
+
+# Run the Pipeline
+
+Navigate to
 
 ```
-practice_table
+DAGs
+```
+
+Locate your DAG.
+
+Enable it.
+
+Click
+
+```
+Trigger DAG
+```
+
+Monitor each task until all tasks complete successfully.
+
+---
+
+# Verify Results
+
+Open Google BigQuery.
+
+Navigate to your dataset.
+
+Confirm that the destination table contains all rows from the CSV file located inside
+
+```
+dags/data
 ```
 
 ---
 
-# Key Learning Outcomes
+# Stop Airflow
 
-Through this project I learned how to:
+```bash
+astro dev stop
+```
 
-- Build an Apache Airflow DAG using Astro CLI
-- Containerise an Airflow environment using Docker
-- Upload local files into Google Cloud Storage
-- Load data from GCS into BigQuery
-- Configure Airflow providers for Google Cloud
-- Debug Airflow task failures using scheduler logs
-- Work with Airflow Operators
-- Use timestamped file generation to avoid overwriting files
-- Organise Airflow projects using configuration files
+---
+
+# Destroy Infrastructure
+
+When the project is no longer required, remove all cloud resources.
+
+```bash
+cd terraform
+
+terraform destroy -auto-approve
+```
 
 ---
 
@@ -270,26 +357,31 @@ Through this project I learned how to:
 
 Potential enhancements include:
 
-- Add data quality validation using Great Expectations
-- Implement incremental loading into BigQuery
-- Archive processed files instead of re-uploading
-- Introduce dbt for data transformation
-- Trigger the pipeline using Cloud Composer
-- Add monitoring and alerting
-- Deploy using CI/CD with GitHub Actions
-- Parameterise the pipeline using Airflow Variables
-- Store secrets in Secret Manager
+- Incremental loading instead of full refreshes
+- Automatic schema detection
+- Data quality validation using Great Expectations
+- Cloud Composer deployment
+- CI/CD pipeline using GitHub Actions
+- Logging and monitoring with Cloud Logging
+- Email notifications for pipeline failures
+- Data transformation using dbt
+- Support for multiple file formats such as JSON and Parquet
 
 ---
 
-# Author
+# Learning Outcomes
 
-**Abdulmalik Ademola Adesokan**
+This project demonstrates practical experience with:
 
-Data Analyst | Aspiring Data Engineer
+- Infrastructure as Code (Terraform)
+- Google Cloud Platform
+- Apache Airflow
+- Workflow orchestration
+- Cloud Storage
+- BigQuery
+- Docker
+- Python
+- IAM permissions
+- End-to-end ETL pipeline development
 
-GitHub:
-(Your GitHub URL)
-
-LinkedIn:
-(Your LinkedIn URL)
+It serves as a beginner-friendly cloud data engineering project while following many of the concepts used in production-grade data pipelines.
