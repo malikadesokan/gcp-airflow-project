@@ -257,21 +257,21 @@ Add Connection
 ---
 Create a new connection
 
+![Airflow Connection](./_images/airflow_admin_connection.png)
+
 | Field | Value |
 |---------|---------|
 | Connection ID | google_cloud_default |
 | Connection Type | Google Cloud |
-
-![Airflow Connection](./_images/airflow_admin_connection.png)
 
 Under **Extra** add your:
 
 - Project ID
 - Service Account Email
 
-
-
 Save the connection.
+
+![Airflow Connection](./_images/airflow_gcp_conn.png)
 
 ---
 
@@ -295,7 +295,7 @@ Trigger DAG
 
 Monitor each task until all tasks complete successfully.
 
-![DAGS Runs](./_images/airflow_dags_runs.png)
+![DAGS Runs](./_images/airflow_automation_runs.png)
 
 ---
 
