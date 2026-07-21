@@ -22,7 +22,7 @@ default_dags={
 
 # Define the basic parameters of the DAG, like schedule and start_date
 with DAG(dag_id='hrh_ade',
-    start_date=datetime(2026, 7, 12),
+    #start_date=pendulim.datetime(2026, 7, 12),
     schedule="@hourly",
     catchup=False,
     default_args=default_dags,
