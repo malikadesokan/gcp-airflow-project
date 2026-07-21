@@ -339,13 +339,8 @@ Potential enhancements include:
 
 - Incremental loading instead of full refreshes
 - Automatic schema detection
-- Data quality validation using Great Expectations
-- Cloud Composer deployment
-- CI/CD pipeline using GitHub Actions
-- Logging and monitoring with Cloud Logging
 - Email notifications for pipeline failures
 - Data transformation using dbt
-- Support for multiple file formats such as JSON and Parquet
 
 ---
 
