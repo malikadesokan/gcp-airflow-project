@@ -21,6 +21,7 @@ terraform/*.tfstate
 terraform/*.hcl
 terraform/*.backup
 include
+terraform/test.tfstate
 
 
 
